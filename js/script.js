@@ -8,6 +8,7 @@ FSJS project 1 - A Random Quote Generator
 
 //An array of quotes with 'quote', 'sorce', and optional 'year' proberty is being created.
 //Exceeds Expectations: Objects in array include additional properties, such as categorization tags.
+
 const quotes = [
   {
     quote: "You know you’re in love when you can’t fall asleep because reality is finally better than your dreams.",
@@ -42,6 +43,9 @@ const quotes = [
 //Function returns a random quote from quotes array
 const getRandomQuote = () => {
   let randomNumber = Math.floor(Math.random()*quotes.length);
+  if (quotes[randomNumber].quote == document.querySelector('.quote').textContent) {   //condition to prevent to insert same quote two times in a row
+    return getRandomQuote();
+  }
   return quotes[randomNumber];
 };
 
@@ -72,10 +76,14 @@ const printQuote = () => {
 
   setRandomBackgroudColor();
   document.getElementById('quote-box').innerHTML = stringHTML;
+
+  //Resets printQuote execution repetition
+  clearInterval(autoPrintQuote);
+  autoPrintQuote = setInterval(printQuote, 7000);
 };
 
-//Executes printQuote every 3 sec
-setInterval(printQuote, 3000);
+//Executes printQuote every 7 sec
+let autoPrintQuote = setInterval(printQuote, 7000);
 
 /***
   When the "Show another quote" button is clicked, the event listener
